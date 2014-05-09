@@ -1,0 +1,39 @@
+{
+  "name": "cucumber-with-caffeine",
+  "description": "Cucumber.js supercharged with Mocha reporters.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/shyiko/cucumber-with-caffeine",
+  "author": {
+    "name": "Stanley Shyiko",
+    "email": "stanley.shyiko@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/shyiko/cucumber-with-caffeine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shyiko/cucumber-with-caffeine/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/shyiko/cucumber-with-caffeine/blob/master/mit.license"
+    }
+  ],
+  "main": "./src",
+  "scripts": {
+    "lint": "./node_modules/jshint/bin/jshint --reporter node_modules/jshint-stylish/stylish.js src/"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "cucumber": "0.4.0",
+    "mocha": "1.18.2"
+  },
+  "devDependencies": {
+    "jshint": "~2.5.0",
+    "jshint-stylish": "~0.2.0"
+  },
+  "keywords": ["cucumber", "mocha", "reporter"]
+}
