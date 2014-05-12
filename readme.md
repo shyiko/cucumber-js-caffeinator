@@ -1,11 +1,11 @@
-# cucumber-with-caffeine
+# cucumber-js-caffeinator
 
 Cucumber.js supercharged with Mocha reporters (both built-in and third-party).
 
 ## Installation
 
 ```sh
-$ npm install --save cucumber-with-caffeine
+$ npm install --save cucumber-caffeinator
 ```
 
 ## Usage
@@ -28,7 +28,7 @@ Now, depending on how you run cucumber and on the level of coupling you are will
  options:
 
 * Use cucumber-js (or cucumber.js) shell script as before but with addition of
-"--require ./node_modules/cucumber-with-caffeine/src/index.js --reporter:<mocha's reporter name>".
+"--require ./node_modules/cucumber-caffeinator/src/index.js --reporter:<mocha's reporter name>".
 
 So, for example, if you are running cucumber-js like so
 
@@ -39,7 +39,7 @@ $ cucumber-js test/features
 and all you can think of is "nyan" reporter, then type in
 
 ```sh
-$ cucumber-js --require ./node_modules/cucumber-with-caffeine/src/index.js --reporter:nyan --require test/features test/features
+$ cucumber-js --require ./node_modules/cucumber-caffeinator/src/index.js --reporter:nyan --require test/features test/features
 ```
 
 and hit enter. To switch between different reporters change the value next to "--reporter:" (e.g. --reporter:spec,
@@ -48,12 +48,12 @@ and hit enter. To switch between different reporters change the value next to "-
 > Note the addition of "--require test/features". Cucumber's CLI disables automatic scripts loading on "--require", so
 you have to add that part as well.
 
-* Add require('cucumber-with-caffeine').call(this, options) to the world.js
+* Add require('cucumber-caffeinator').call(this, options) to the world.js
 
 In this case world.js might look like:
 
 ```js
-var caffeinator = require('cucumber-with-caffeine');
+var caffeinator = require('cucumber-caffeinator');
 
 module.exports = function() {
 
@@ -70,4 +70,4 @@ Note that you'll still be able to switch reporters with "--reporter:<mocha's rep
 
 ## License
 
-[MIT](https://github.com/shyiko/cucumber-with-caffeine/blob/master/mit.license)
+[MIT](https://github.com/shyiko/cucumber-js-caffeinator/blob/master/mit.license)

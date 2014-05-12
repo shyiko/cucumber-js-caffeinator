@@ -1,23 +1,23 @@
 {
-  "name": "cucumber-with-caffeine",
+  "name": "cucumber-caffeinator",
   "description": "Cucumber.js supercharged with Mocha reporters.",
   "version": "0.1.0",
-  "homepage": "https://github.com/shyiko/cucumber-with-caffeine",
+  "homepage": "https://github.com/shyiko/cucumber-js-caffeinator",
   "author": {
     "name": "Stanley Shyiko",
     "email": "stanley.shyiko@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/shyiko/cucumber-with-caffeine.git"
+    "url": "git://github.com/shyiko/cucumber-js-caffeinator.git"
   },
   "bugs": {
-    "url": "https://github.com/shyiko/cucumber-with-caffeine/issues"
+    "url": "https://github.com/shyiko/cucumber-js-caffeinator/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/shyiko/cucumber-with-caffeine/blob/master/mit.license"
+      "url": "https://github.com/shyiko/cucumber-js-caffeinator/blob/master/mit.license"
     }
   ],
   "main": "./src",
