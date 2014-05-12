@@ -1,39 +1,45 @@
 var EventEmitter = require('events').EventEmitter;
 var Mocha = require('mocha');
 
-var options = process.argv.reduce(function (obj, value) {
-  var groups = /^--(\w+):(.+)$/.exec(value);
-  if (groups !== null) {
-    obj[groups[1]] = groups[2];
-  }
-  return obj;
-}, {});
+module.exports = function (options) {
 
-var runner = new EventEmitter();
-
-var initializeReporter = function (name) {
-  var context = {};
-  Mocha.prototype.reporter.call(context, name);
-  return new context._reporter(runner);
-};
-
-initializeReporter(options.reporter);
-
-var output = (function () {
-  var stdout = process.stdout;
-  var suppressedWrite = function () {};
-  var originalWrite = stdout.write;
-  return {
-    off: function () {
-      stdout.write = suppressedWrite;
-    },
-    on: function () {
-      stdout.write = originalWrite;
+  process.argv.reduce(function (obj, value) {
+    var groups = /^--(\w+):(.+)$/.exec(value);
+    if (groups !== null) {
+      obj[groups[1]] = groups[2];
     }
-  };
-}());
+    return obj;
+  }, options || (options = {}));
 
-module.exports = function () {
+  var runner = new EventEmitter();
+
+  var initializeReporter = function (name) {
+    var context = {};
+    Mocha.prototype.reporter.call(context, name);
+    return new context._reporter(runner);
+  };
+
+  initializeReporter(options.reporter);
+
+  // currently there is no way to unregister Cucumber's "formatter" (cucumber@0.4.0)
+  // as the result resorting to some REALLY nasty stuff here (suppressing output outside "safe" boundaries)
+
+  var output = (function () {
+    var stdout = process.stdout;
+    var originalWrite = stdout.write;
+    var suppressedWrite = function () {
+      return true
+    };
+    suppressedWrite._original = originalWrite;
+    return {
+      off: function () {
+        stdout.write = suppressedWrite;
+      },
+      on: function () {
+        stdout.write = originalWrite;
+      }
+    };
+  }());
 
   var originalRegisterHandler = this.registerHandler;
   this.registerHandler = function (eventName, handler) {
