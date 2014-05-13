@@ -11,7 +11,7 @@ module.exports = function (options) {
     return obj;
   }, options || (options = {}));
 
-  var runner = new EventEmitter();
+  var runner = new Mocha.Runner(new Mocha.Suite(''));
 
   var initializeReporter = function (name) {
     var context = {};
@@ -89,25 +89,32 @@ module.exports = function (options) {
 
   this.registerHandler('BeforeFeature', function (event, callback) {
     var feature = event.getPayloadItem('feature');
-    runner.emit('suite', stack.push(new Mocha.Suite(feature.getName())));
+    var suite = new Mocha.Suite(feature.getName());
+    runner.suite.addSuite(suite);
+    runner.emit('suite', stack.push(suite));
     callback();
   });
 
   this.registerHandler('BeforeScenario', function (event, callback) {
     var scenario = event.getPayloadItem('scenario');
-    runner.emit('suite', stack.push(new Mocha.Suite(scenario.getName())));
+    var suite = new Mocha.Suite(scenario.getName());
+    stack.peek().addSuite(suite);
+    runner.emit('suite', stack.push(suite));
     callback();
   });
 
   this.registerHandler('BeforeStep', function (event, callback) {
     var step = event.getPayloadItem('step');
-    runner.emit('test', stack.push(new Mocha.Test(step.getKeyword() + step.getName())));
+    var test = new Mocha.Test(step.getKeyword() + step.getName(), function () { /* omitted */ });
+    stack.peek().addTest(test);
+    runner.emit('test', stack.push(test));
     callback();
   });
 
   this.registerHandler('StepResult', function (event, callback) {
     var stepResult = event.getPayloadItem('stepResult');
     var test = stack.peek();
+    test.duration = stepResult.getDuration() / 1e6;
     if (stepResult.isSuccessful()) {
       runner.emit('pass', test);
     } else if (stepResult.isPending()) {
