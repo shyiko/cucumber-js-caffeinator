@@ -28,12 +28,11 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "cucumber": "0.4.0",
     "mocha": "1.18.2"
   },
   "devDependencies": {
     "jshint": "~2.5.0",
     "jshint-stylish": "~0.2.0"
   },
-  "keywords": ["cucumber", "mocha", "reporter"]
+  "keywords": ["cucumber", "extension", "caffeine", "mocha", "reporter"]
 }
