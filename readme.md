@@ -1,6 +1,6 @@
-# cucumber-js-caffeinator
+# cucumber-js-caffeinator [![Build Status](https://travis-ci.org/shyiko/cucumber-js-caffeinator.svg?branch=master)](https://travis-ci.org/shyiko/cucumber-js-caffeinator)
 
-Cucumber.js supercharged with Mocha reporters (both built-in and third-party).
+Cucumber.js supercharged with [Mocha reporters](http://visionmedia.github.io/mocha/#reporters) (both built-in and third-party).
 
 ## Installation
 
@@ -27,8 +27,7 @@ Imagine you keep your tests under "test" directory as shown bellow:
 Now, depending on how you run cucumber and on the level of coupling you are willing to introduce, you have the following
  options:
 
-* Use cucumber-js (or cucumber.js) shell script as before but with addition of
-"--require ./node_modules/cucumber-caffeinator/src/index.js --reporter:<mocha's reporter name>".
+#### 1. Use cucumber-js (or cucumber.js) shell script as before but with addition of "--require ./node_modules/cucumber-caffeinator/src/index.js --reporter:<mocha's reporter name>".
 
 So, for example, if you are running cucumber-js like so
 
@@ -48,7 +47,7 @@ and hit enter. To switch between different reporters change the value next to "-
 > Note the addition of "--require test/features". Cucumber's CLI disables automatic scripts loading on "--require", so
 you have to add that part as well.
 
-* Add require('cucumber-caffeinator').call(this, options) to the world.js
+#### 2. Add require('cucumber-caffeinator').call(this, options) to the world.js
 
 In this case world.js might look like:
 
