@@ -1,4 +1,3 @@
-var EventEmitter = require('events').EventEmitter;
 var Mocha = require('mocha');
 
 module.exports = function (options) {
@@ -28,7 +27,7 @@ module.exports = function (options) {
     var stdout = process.stdout;
     var originalWrite = stdout.write;
     var suppressedWrite = function () {
-      return true
+      return true;
     };
     suppressedWrite._original = originalWrite;
     return {
