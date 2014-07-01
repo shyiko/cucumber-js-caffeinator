@@ -1,3 +1,5 @@
+var path = require('path');
+
 var Mocha = require('mocha');
 
 module.exports = function (options) {
@@ -10,18 +12,8 @@ module.exports = function (options) {
     return obj;
   }, options || (options = {}));
 
-  var runner = new Mocha.Runner(new Mocha.Suite(''));
-
-  var initializeReporter = function (name) {
-    var context = {};
-    Mocha.prototype.reporter.call(context, name);
-    return new context._reporter(runner);
-  };
-
-  initializeReporter(options.reporter);
-
   // currently there is no way to unregister Cucumber's "formatter" (cucumber@0.4.0)
-  // as the result resorting to some REALLY nasty stuff here (suppressing output outside "safe" boundaries)
+  // as the result resorting to some REALLY nasty stuff here (suppressing output outside of "safe" boundaries)
 
   var output = (function () {
     var stdout = process.stdout;
@@ -63,56 +55,66 @@ module.exports = function (options) {
     });
   };
 
-  var stack = (function () {
-    var _stack = [];
-    var self = {
-      push: function (runnable) {
-        runnable.parent = self.peek();
-        _stack.push(runnable);
-        return runnable;
-      },
-      peek: function () {
-        return _stack.length ? _stack[_stack.length - 1] : void 0;
-      },
-      pop: function () {
-        return _stack.pop();
-      }
-    };
-    return self;
-  }());
+  var runner, featureIndex, scenarioIndex, stepIndex;
 
   this.registerHandler('BeforeFeatures', function (event, callback) {
+    var rootSuite = new Mocha.Suite('');
+
+    var features = event.getPayloadItem('features');
+    if (!features) {
+      throw new Error('This version of cucumber-caffeinator requires cucumber 0.4.1+. ' +
+        'Check https://github.com/shyiko/cucumber-js-caffeinator for more information.');
+    }
+    var cwd = process.cwd();
+    features.getFeatures().syncForEach(function (feature) {
+      var suite = new Mocha.Suite(feature.getName() +
+        ' (' + path.relative(cwd, feature.getUri()) + ')');
+      rootSuite.addSuite(suite);
+      feature.getFeatureElements().syncForEach(function (scenario) {
+        var innerSuite = new Mocha.Suite(scenario.getName() +
+          ' (:' + scenario.getLine() + ')');
+        suite.addSuite(innerSuite);
+        scenario.getSteps().syncForEach(function (step) {
+          innerSuite.addTest(new Mocha.Test(step.getKeyword() + step.getName(), function () { /* omitted */ }));
+        });
+      });
+    });
+
+    runner = new Mocha.Runner(rootSuite);
+
+    var initializeReporter = function (name) {
+      var context = {};
+      Mocha.prototype.reporter.call(context, name);
+      return new context._reporter(runner);
+    };
+
+    initializeReporter(options.reporter);
+
+    featureIndex = 0;
     runner.emit('start');
     callback();
   });
 
   this.registerHandler('BeforeFeature', function (event, callback) {
-    var feature = event.getPayloadItem('feature');
-    var suite = new Mocha.Suite(feature.getName());
-    runner.suite.addSuite(suite);
-    runner.emit('suite', stack.push(suite));
+    scenarioIndex = 0;
+    runner.emit('suite', runner.suite.suites[featureIndex]);
     callback();
   });
 
   this.registerHandler('BeforeScenario', function (event, callback) {
-    var scenario = event.getPayloadItem('scenario');
-    var suite = new Mocha.Suite(scenario.getName());
-    stack.peek().addSuite(suite);
-    runner.emit('suite', stack.push(suite));
+    stepIndex = 0;
+    runner.emit('suite', runner.suite.suites[featureIndex].suites[scenarioIndex]);
     callback();
   });
 
   this.registerHandler('BeforeStep', function (event, callback) {
-    var step = event.getPayloadItem('step');
-    var test = new Mocha.Test(step.getKeyword() + step.getName(), function () { /* omitted */ });
-    stack.peek().addTest(test);
-    runner.emit('test', stack.push(test));
+    runner.emit('test', runner.suite.suites[featureIndex].suites[scenarioIndex].tests[stepIndex]);
     callback();
   });
 
   this.registerHandler('StepResult', function (event, callback) {
     var stepResult = event.getPayloadItem('stepResult');
-    var test = stack.peek();
+    var test = runner.suite.suites[featureIndex].suites[scenarioIndex].tests[stepIndex];
     test.duration = stepResult.getDuration() / 1e6;
     if (stepResult.isSuccessful()) {
       runner.emit('pass', test);
@@ -128,17 +130,17 @@ module.exports = function (options) {
   });
 
   this.registerHandler('AfterStep', function (event, callback) {
-    runner.emit('test end', stack.pop());
+    runner.emit('test end', runner.suite.suites[featureIndex].suites[scenarioIndex].tests[stepIndex++]);
     callback();
   });
 
   this.registerHandler('AfterScenario', function (event, callback) {
-    runner.emit('suite end', stack.pop());
+    runner.emit('suite end', runner.suite.suites[featureIndex].suites[scenarioIndex++]);
     callback();
   });
 
   this.registerHandler('AfterFeature', function (event, callback) {
-    runner.emit('suite end', stack.pop());
+    runner.emit('suite end', runner.suite.suites[featureIndex++]);
     callback();
   });
 
