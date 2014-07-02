@@ -2,8 +2,13 @@ var path = require('path');
 
 var Mocha = require('mocha');
 
+/**
+ * @param {Object} [options]
+ * @param {String} [options.reporter] One of Mocha's reporters.
+ */
 module.exports = function (options) {
 
+  // gathers options from the command line (in "--option_key:option_value" form)
   process.argv.reduce(function (obj, value) {
     var groups = /^--(\w+):(.+)$/.exec(value);
     if (groups !== null) {
@@ -11,6 +16,10 @@ module.exports = function (options) {
     }
     return obj;
   }, options || (options = {}));
+
+  if (!options.reporter) {
+    return; // activate only if reporter has been passed in
+  }
 
   // currently there is no way to unregister Cucumber's "formatter" (cucumber@0.4.0)
   // as the result resorting to some REALLY nasty stuff here (suppressing output outside of "safe" boundaries)
