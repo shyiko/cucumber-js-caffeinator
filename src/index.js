@@ -5,6 +5,9 @@ var Mocha = require('mocha');
 /**
  * @param {Object} [options]
  * @param {String} [options.reporter] One of Mocha's reporters.
+ * @param {Function} [options.featureNameFormatter(feature)] Custom Feature name formatter.
+ * @param {Function} [options.scenarioNameFormatter(feature, scenario)] Custom Scenario name formatter.
+ * @param {Function} [options.stepNameFormatter(feature, scenario, step)] Custom Step name formatter.
  */
 module.exports = function (options) {
 
@@ -76,15 +79,19 @@ module.exports = function (options) {
     }
     var cwd = process.cwd();
     features.getFeatures().syncForEach(function (feature) {
-      var suite = new Mocha.Suite(feature.getName() +
-        ' (' + path.relative(cwd, feature.getUri()) + ')');
+      var suite = new Mocha.Suite(options.featureNameFormatter ?
+        options.featureNameFormatter(feature) :
+        feature.getName() + ' (' + path.relative(cwd, feature.getUri()) + ')');
       rootSuite.addSuite(suite);
       feature.getFeatureElements().syncForEach(function (scenario) {
-        var innerSuite = new Mocha.Suite(scenario.getName() +
-          ' (:' + scenario.getLine() + ')');
+        var innerSuite = new Mocha.Suite(options.scenarioNameFormatter ?
+          options.scenarioNameFormatter(feature, scenario) :
+          scenario.getName() + ' (' + path.relative(cwd, scenario.getUri()) + ':' + scenario.getLine() + ')');
         suite.addSuite(innerSuite);
         scenario.getSteps().syncForEach(function (step) {
-          innerSuite.addTest(new Mocha.Test(step.getKeyword() + step.getName(), function () { /* omitted */ }));
+          innerSuite.addTest(new Mocha.Test(options.stepNameFormatter ?
+            options.stepNameFormatter(feature, scenario, step) :
+            step.getKeyword() + step.getName(), function () { /* omitted */ }));
         });
       });
     });
