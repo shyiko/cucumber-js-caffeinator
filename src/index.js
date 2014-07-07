@@ -88,10 +88,16 @@ module.exports = function (options) {
           options.scenarioNameFormatter(feature, scenario) :
           scenario.getName() + ' (' + path.relative(cwd, scenario.getUri()) + ':' + scenario.getLine() + ')');
         suite.addSuite(innerSuite);
-        scenario.getSteps().syncForEach(function (step) {
-          innerSuite.addTest(new Mocha.Test(options.stepNameFormatter ?
-            options.stepNameFormatter(feature, scenario, step) :
-            step.getKeyword() + step.getName(), function () { /* omitted */ }));
+        var stepCollections = [scenario.getSteps()];
+        if (feature.hasBackground()) {
+          stepCollections.unshift(feature.getBackground().getSteps());
+        }
+        stepCollections.forEach(function (steps) {
+          steps.syncForEach(function (step) {
+            innerSuite.addTest(new Mocha.Test(options.stepNameFormatter ?
+              options.stepNameFormatter(feature, scenario, step) :
+              step.getKeyword() + step.getName(), function () { /* omitted */ }));
+          });
         });
       });
     });
