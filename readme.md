@@ -67,13 +67,13 @@ module.exports = function() {
 Note that you'll still be able to switch reporters with "--reporter:&lt;mocha's reporter name&gt;". In case of cucumber-js
 (or cucumber.js) shell script it's as simple as `cucumber-js --reporter:nyan test/features`.
 
-## History
+## Changelog
 
-- 1.1.0 "Background"s support, enabled ignoreLeaks. 
-- 1.0.0 Requires Cucumber.js &gt;=0.4.1. Better compatibility with existing Mocha reporters, optional activation and 
+- 1.1.0 - Backgrounds support, enabled ignoreLeaks. 
+- 1.0.0 - Requires Cucumber.js &gt;=0.4.1. Better compatibility with existing Mocha reporters, optional activation and 
 output formatting.  
-- 0.1.0 Compatible with Cucumber.js &lt;=0.4.0.
+- 0.1.0 - Compatible with Cucumber.js &lt;=0.4.0.
 
 ## License
 
-[MIT](https://github.com/shyiko/cucumber-js-caffeinator/blob/master/mit.license)
+[MIT License](https://github.com/shyiko/cucumber-js-caffeinator/blob/master/mit.license)
