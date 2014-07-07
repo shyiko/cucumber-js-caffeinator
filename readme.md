@@ -69,6 +69,7 @@ Note that you'll still be able to switch reporters with "--reporter:&lt;mocha's 
 
 ## History
 
+- 1.1.0 "Background"s support, enabled ignoreLeaks. 
 - 1.0.0 Requires Cucumber.js &gt;=0.4.1. Better compatibility with existing Mocha reporters, optional activation and 
 output formatting.  
 - 0.1.0 Compatible with Cucumber.js &lt;=0.4.0.
