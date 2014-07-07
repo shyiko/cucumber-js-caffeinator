@@ -103,6 +103,7 @@ module.exports = function (options) {
     });
 
     runner = new Mocha.Runner(rootSuite);
+    runner.ignoreLeaks = true;
 
     var initializeReporter = function (name) {
       var context = {};
