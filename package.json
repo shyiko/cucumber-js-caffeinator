@@ -1,7 +1,7 @@
 {
   "name": "cucumber-caffeinator",
   "description": "Cucumber.js supercharged with Mocha reporters.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/shyiko/cucumber-js-caffeinator",
   "author": {
     "name": "Stanley Shyiko",
