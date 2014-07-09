@@ -40,7 +40,7 @@ module.exports = function (options) {
           return function () {
             output.off();
             fn.apply(this, arguments);
-          }
+          };
         }
         stdout.write = suppressedWrite;
       },
