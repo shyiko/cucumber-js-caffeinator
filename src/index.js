@@ -142,8 +142,8 @@ module.exports = function (options) {
   this.registerHandler('StepResult', function (event, callback) {
     var stepResult = event.getPayloadItem('stepResult');
     var test = runner.suite.suites[featureIndex].suites[scenarioIndex].tests[stepIndex];
-    test.duration = stepResult.getDuration() / 1e6;
-    if (stepResult.isSuccessful()) {
+    test.duration = stepResult.getDuration() / 1e6 || 0;
+		if (stepResult.isSuccessful()) {
       runner.emit('pass', test);
     } else if (stepResult.isPending()) {
       runner.emit('pending', test);
