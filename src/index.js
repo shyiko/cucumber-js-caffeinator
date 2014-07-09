@@ -35,7 +35,13 @@ module.exports = function (options) {
     };
     suppressedWrite._original = originalWrite;
     return {
-      off: function () {
+      off: function (fn) {
+        if (fn) {
+          return function () {
+            output.off();
+            fn.apply(this, arguments);
+          }
+        }
         stdout.write = suppressedWrite;
       },
       on: function () {
@@ -48,10 +54,7 @@ module.exports = function (options) {
   this.registerHandler = function (eventName, handler) {
     originalRegisterHandler.call(this, eventName, function (event, callback) {
       output.on();
-      handler.call(this, event, function () {
-        output.off();
-        callback();
-      });
+      handler.call(this, event, output.off(callback));
     });
   };
 
@@ -59,11 +62,12 @@ module.exports = function (options) {
   this.Given = this.When = this.Then = this.defineStep = function (name, fn) {
     originalDefineStep.call(this, name, function () {
       output.on();
-      try {
-        fn.apply(this, arguments);
-      } finally {
-        output.off();
-      }
+      var args = Array.prototype.slice.call(arguments);
+      var originalCallback = args[args.length - 1];
+      originalCallback.pending = output.off(originalCallback.pending);
+      originalCallback.fail = output.off(originalCallback.fail);
+      args[args.length - 1] = output.off(originalCallback);
+      fn.apply(this, args);
     });
   };
 
