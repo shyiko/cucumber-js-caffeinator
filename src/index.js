@@ -115,24 +115,24 @@ module.exports = function (options) {
 
     featureIndex = 0;
     runner.emit('start');
-    callback();
+    process.nextTick(callback);
   });
 
   this.registerHandler('BeforeFeature', function (event, callback) {
     scenarioIndex = 0;
     runner.emit('suite', runner.suite.suites[featureIndex]);
-    callback();
+    process.nextTick(callback);
   });
 
   this.registerHandler('BeforeScenario', function (event, callback) {
     stepIndex = 0;
     runner.emit('suite', runner.suite.suites[featureIndex].suites[scenarioIndex]);
-    callback();
+    process.nextTick(callback);
   });
 
   this.registerHandler('BeforeStep', function (event, callback) {
     runner.emit('test', runner.suite.suites[featureIndex].suites[scenarioIndex].tests[stepIndex]);
-    callback();
+    process.nextTick(callback);
   });
 
   this.registerHandler('StepResult', function (event, callback) {
@@ -149,27 +149,27 @@ module.exports = function (options) {
       var err = stepResult.getFailureException();
       runner.emit('fail', test, err);
     }
-    callback();
+    process.nextTick(callback);
   });
 
   this.registerHandler('AfterStep', function (event, callback) {
     runner.emit('test end', runner.suite.suites[featureIndex].suites[scenarioIndex].tests[stepIndex++]);
-    callback();
+    process.nextTick(callback);
   });
 
   this.registerHandler('AfterScenario', function (event, callback) {
     runner.emit('suite end', runner.suite.suites[featureIndex].suites[scenarioIndex++]);
-    callback();
+    process.nextTick(callback);
   });
 
   this.registerHandler('AfterFeature', function (event, callback) {
     runner.emit('suite end', runner.suite.suites[featureIndex++]);
-    callback();
+    process.nextTick(callback);
   });
 
   this.registerHandler('AfterFeatures', function (event, callback) {
     runner.emit('end');
-    callback();
+    process.nextTick(callback);
   });
 
 };
