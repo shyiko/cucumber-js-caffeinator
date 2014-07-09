@@ -1,6 +1,6 @@
 # cucumber-js-caffeinator [![Build Status](https://travis-ci.org/shyiko/cucumber-js-caffeinator.svg?branch=master)](https://travis-ci.org/shyiko/cucumber-js-caffeinator)
 
-[Cucumber.js](https://github.com/cucumber/cucumber-js) supercharged with [Mocha reporters](http://visionmedia.github.io/mocha/#reporters) (both built-in and third-party).
+[Cucumber.js](https://github.com/cucumber/cucumber-js) supercharged with [Mocha reporters](http://visionmedia.github.io/mocha/#reporters) (both built-in and [third-party](https://github.com/visionmedia/mocha/wiki#interfaces--reporters)).
 
 ## Installation
 
@@ -69,7 +69,8 @@ Note that you'll still be able to switch reporters with "--reporter:&lt;mocha's 
 
 ## Changelog
 
-- 1.1.0 - Backgrounds support, enabled ignoreLeaks. 
+- 1.1.1 - Fixed "RangeError: Maximum call stack size exceeded", Cucumber's output suppression.      
+- 1.1.0 - Backgrounds support, turned off leaks detection. 
 - 1.0.0 - Requires Cucumber.js &gt;=0.4.1. Better compatibility with existing Mocha reporters, optional activation and 
 output formatting.  
 - 0.1.0 - Compatible with Cucumber.js &lt;=0.4.0.
