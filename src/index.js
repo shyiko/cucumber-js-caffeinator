@@ -87,7 +87,7 @@ module.exports = function (options) {
         options.featureNameFormatter(feature) :
         feature.getName() + ' (' + path.relative(cwd, feature.getUri()) + ')');
       rootSuite.addSuite(suite);
-      feature.getFeatureElements().syncForEach(function (scenario) {
+      var visitScenario = function (scenario) {
         var innerSuite = new Mocha.Suite(options.scenarioNameFormatter ?
           options.scenarioNameFormatter(feature, scenario) :
           scenario.getName() + ' (' + path.relative(cwd, scenario.getUri()) + ':' + scenario.getLine() + ')');
@@ -103,7 +103,14 @@ module.exports = function (options) {
               step.getKeyword() + step.getName(), function () { /* omitted */ }));
           });
         });
-      });
+      };
+      // using instructVisitorToVisitScenarios instead of getFeatureElements because of broken backward-compatibility
+      // in 0.4.3 release (cucumber/cucumber-js#4f6bcc45a98e5e579bb2f5c7fababe78359f5e28).
+      feature.instructVisitorToVisitScenarios({
+        visitScenario: function(scenario, next) {
+          visitScenario(scenario); next();
+        }
+      }, function () {});
     });
 
     runner = new Mocha.Runner(rootSuite);
