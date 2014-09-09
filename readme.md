@@ -71,8 +71,9 @@ Note that you'll still be able to switch reporters with "--reporter:&lt;mocha's 
 
 ## Changelog
 
-- 1.1.2 - Fixed "Test duration: NaN".      
-- 1.1.1 - Fixed "RangeError: Maximum call stack size exceeded", Cucumber's output suppression.      
+- 1.1.3 - Compatibility with Cucumber.js 0.4.3.
+- 1.1.2 - Fixed "Test duration: NaN".
+- 1.1.1 - Fixed "RangeError: Maximum call stack size exceeded", Cucumber's output suppression.
 - 1.1.0 - Backgrounds support, turned off leaks detection. 
 - 1.0.0 - Requires Cucumber.js &gt;=0.4.1. Better compatibility with existing Mocha reporters, optional activation and 
 output formatting.  
