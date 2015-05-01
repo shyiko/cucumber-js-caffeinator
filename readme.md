@@ -71,6 +71,7 @@ Note that you'll still be able to switch reporters with "--reporter:&lt;mocha's 
 
 ## Changelog
 
+- 1.1.4 - Fixed pending/fail callbacks advising (by [jhenriquez](https://github.com/shyiko/cucumber-js-caffeinator/pull/1)).
 - 1.1.3 - Compatibility with Cucumber.js 0.4.3.
 - 1.1.2 - Fixed "Test duration: NaN".
 - 1.1.1 - Fixed "RangeError: Maximum call stack size exceeded", Cucumber's output suppression.
