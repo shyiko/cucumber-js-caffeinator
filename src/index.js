@@ -64,9 +64,11 @@ module.exports = function (options) {
       output.on();
       var args = Array.prototype.slice.call(arguments);
       var originalCallback = args[args.length - 1];
-      originalCallback.pending = output.off(originalCallback.pending);
-      originalCallback.fail = output.off(originalCallback.fail);
+      var pending = output.off(originalCallback.pending);
+      var fail = output.off(originalCallback.fail);
       args[args.length - 1] = output.off(originalCallback);
+      args[args.length - 1].pending = pending;
+      args[args.length - 1].fail = fail;
       fn.apply(this, args);
     });
   };
