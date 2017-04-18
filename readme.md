@@ -1,6 +1,6 @@
 # cucumber-js-caffeinator [![Build Status](https://travis-ci.org/shyiko/cucumber-js-caffeinator.svg?branch=master)](https://travis-ci.org/shyiko/cucumber-js-caffeinator)
 
-[Cucumber.js](https://github.com/cucumber/cucumber-js) supercharged with [Mocha reporters](http://visionmedia.github.io/mocha/#reporters) (both built-in and [third-party](https://github.com/visionmedia/mocha/wiki#interfaces--reporters)). 
+[Cucumber.js](https://github.com/cucumber/cucumber-js) supercharged with [Mocha reporters](http://mochajs.org/#reporters) (both built-in and [third-party](https://github.com/mochajs/mocha/wiki#interfaces--reporters)). 
 
 This project is just a plugin (i.e. it does not replace Cucumber.js in any way. In fact, you have to `npm install cucumber` prior to cucumber-caffeinator). 
 
